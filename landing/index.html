@@ -108,8 +108,47 @@
     </div>
   </section>
 
+  <!-- ============ COUNTDOWN ============ -->
+  <section aria-label="Offer countdown" class="px-5 md:px-8 pt-14 md:pt-20 pb-2">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="inline-block bg-gold text-green1 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] px-4 py-1.5 rounded-full mb-5">
+        ★ Hurry — Ends This Sunday
+      </span>
+      <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-green1 mb-2 leading-tight">
+        Save 30% before the timer hits zero
+      </h2>
+      <p class="text-ink/60 text-sm md:text-base mb-7 md:mb-9">
+        Offer ends Sunday, May 10 · 11:59 PM PST
+      </p>
+
+      <div id="countdown" role="timer" aria-live="polite"
+           class="flex justify-center gap-2.5 sm:gap-4 md:gap-6">
+        <div class="bg-green1 rounded-xl px-3 py-3 sm:px-5 sm:py-4 md:px-7 md:py-5 min-w-[68px] sm:min-w-[80px] md:min-w-[110px] shadow-lg ring-1 ring-gold/20">
+          <div id="cd-days"    class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gold leading-none tabular-nums">--</div>
+          <div class="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/80 mt-2">Days</div>
+        </div>
+        <div class="bg-green1 rounded-xl px-3 py-3 sm:px-5 sm:py-4 md:px-7 md:py-5 min-w-[68px] sm:min-w-[80px] md:min-w-[110px] shadow-lg ring-1 ring-gold/20">
+          <div id="cd-hours"   class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gold leading-none tabular-nums">--</div>
+          <div class="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/80 mt-2">Hours</div>
+        </div>
+        <div class="bg-green1 rounded-xl px-3 py-3 sm:px-5 sm:py-4 md:px-7 md:py-5 min-w-[68px] sm:min-w-[80px] md:min-w-[110px] shadow-lg ring-1 ring-gold/20">
+          <div id="cd-minutes" class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gold leading-none tabular-nums">--</div>
+          <div class="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/80 mt-2">Minutes</div>
+        </div>
+        <div class="bg-green1 rounded-xl px-3 py-3 sm:px-5 sm:py-4 md:px-7 md:py-5 min-w-[68px] sm:min-w-[80px] md:min-w-[110px] shadow-lg ring-1 ring-gold/20">
+          <div id="cd-seconds" class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gold leading-none tabular-nums">--</div>
+          <div class="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/80 mt-2">Seconds</div>
+        </div>
+      </div>
+
+      <p id="countdown-expired" class="hidden mt-6 text-brown font-semibold text-base md:text-lg uppercase tracking-wider">
+        ⏰ Offer expired — keep an eye on your inbox for the next drop.
+      </p>
+    </div>
+  </section>
+
   <!-- ============ OFFER CARDS ============ -->
-  <section id="products" class="max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-24 lg:py-28">
+  <section id="products" class="max-w-7xl mx-auto px-5 md:px-8 py-12 md:py-16 lg:py-20">
     <header class="text-center mb-12 md:mb-16">
       <span class="text-brown text-xs font-semibold uppercase tracking-[0.3em]">✦ Our Bestsellers ✦</span>
       <h2 class="font-serif text-3xl md:text-5xl lg:text-6xl text-green1 mt-4 leading-tight">
@@ -346,6 +385,47 @@
       <p class="text-[11px] mt-6 opacity-60">© 2026 Reshma Beauty. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- ============ COUNTDOWN SCRIPT ============ -->
+  <script>
+    (function () {
+      // Sunday May 10, 2026 23:59:59 PDT (Los Angeles, UTC-7 in May due to DST)
+      // = Monday May 11, 2026 06:59:59 UTC. Use 07:00:00 UTC as the end moment.
+      var TARGET = Date.UTC(2026, 4, 11, 7, 0, 0); // months are 0-indexed
+
+      var d = document.getElementById('cd-days');
+      var h = document.getElementById('cd-hours');
+      var m = document.getElementById('cd-minutes');
+      var s = document.getElementById('cd-seconds');
+      var grid = document.getElementById('countdown');
+      var expired = document.getElementById('countdown-expired');
+
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+      function tick() {
+        var diff = TARGET - Date.now();
+        if (diff <= 0) {
+          d.textContent = h.textContent = m.textContent = s.textContent = '00';
+          if (grid) grid.classList.add('opacity-50');
+          if (expired) expired.classList.remove('hidden');
+          return false;
+        }
+        var days  = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var mins  = Math.floor((diff % 3600000) / 60000);
+        var secs  = Math.floor((diff % 60000) / 1000);
+        d.textContent = pad(days);
+        h.textContent = pad(hours);
+        m.textContent = pad(mins);
+        s.textContent = pad(secs);
+        return true;
+      }
+
+      if (tick()) {
+        var iv = setInterval(function () { if (!tick()) clearInterval(iv); }, 1000);
+      }
+    })();
+  </script>
 
   <!-- ============ STICKY MOBILE CTA ============ -->
   <div class="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-bg/95 backdrop-blur-lg border-t border-green1/15 px-4 py-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
