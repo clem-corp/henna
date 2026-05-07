@@ -95,6 +95,8 @@ All 5 CTAs carry the same campaign tag:
 
 ## Current state
 
+### Newsletter
+
 | Block | Status |
 |---|---|
 | HTML structure & responsive | ✅ |
@@ -103,11 +105,30 @@ All 5 CTAs carry the same campaign tag:
 | URLs verified against live site | ✅ |
 | UTMs on 5 CTAs | ✅ |
 | Timezone PST | ✅ |
+| All 5 CTAs rerouted through landing page | ✅ |
 | Postal address | 🟡 placeholder, awaits real value |
 | Unsub / preferences links | 🟡 awaits ESP choice |
 | Shopify discount code `HENNA30` | 🟡 awaits creation |
 | Real social icon PNGs | 🔴 to provide |
 | Litmus / QA | 🔴 to run |
+
+### Landing page
+
+| Block | Status |
+|---|---|
+| Tailwind production build (18 KB CSS) | ✅ |
+| SEO + Open Graph + favicons | ✅ |
+| Deployed to Vercel | ✅ https://henna-pied.vercel.app/ |
+| All assets self-contained for Vercel | ✅ |
+| Funnel newsletter → landing → Shopify wired | ✅ |
+| Lighthouse perf/a11y/SEO ≥ 90 | ✅ (90 / 93 / 100) |
+| Lighthouse fixes applied (LCP, images, fonts, contrast) | ✅ commit `ef2e2e4` |
+| Lighthouse Best Practices ≥ 90 | 🟡 73 (Google Fonts cookies — needs self-host) |
+| LCP < 2.5 s on Slow 4G | 🟡 3.5 s before fixes — re-run after `ef2e2e4` to confirm |
+| Custom domain | 🟡 optional |
+| Vercel Analytics enabled | 🔴 user action, dashboard toggle |
+| Plausible activated | 🔴 needs sign-up + uncomment snippet |
+| Real Android + iOS device test | 🔴 user action |
 
 ---
 
@@ -174,24 +195,37 @@ All 5 CTAs carry the same campaign tag:
 
 - [x] Mobile-first responsive design (3 cards stack vertical, side-by-side on `md:`)
 - [x] Sticky bottom CTA on mobile, header CTA on desktop, with iOS safe-area inset
-- [x] Tailwind compiled to production: 3 MB CDN runtime → **19 KB minified `style.css`**
-- [x] SEO meta + Open Graph + Twitter Card + canonical
+- [x] Tailwind compiled to production: 3 MB CDN runtime → **18 KB minified `style.css`**
+- [x] SEO meta + Open Graph + Twitter Card + canonical (absolute URLs for og:image)
 - [x] Favicons: SVG (gold "R" on green), 32×32 PNG, 180×180 Apple touch icon
 - [x] `robots.txt` + `sitemap.xml`
 - [x] `vercel.json`: long cache on assets, security headers
 - [x] Plausible analytics snippet placed in `<head>` (commented, ready to activate)
 - [x] `scripts/set-url.sh` to swap placeholder URL everywhere after first deploy
+- [x] **Deployed to Vercel** — live at https://henna-pied.vercel.app/
+- [x] **Production URL wired everywhere** (og:url, canonical, sitemap, robots, AND newsletter CTAs)
+- [x] **Newsletter ↔ Landing funnel connected** — all 5 newsletter CTAs now route through the landing
+- [x] **Lighthouse fixes applied** (commit `ef2e2e4`):
+  - Hero preload + `fetchpriority="high"` + WebP source (177 KB → 144 KB)
+  - Explicit `width`/`height` on every `<img>` (kills layout shift, fixes audit)
+  - Google Fonts deferred via `preload + onload` pattern (saves ~530 ms render-block)
+  - Lazy-load + `decoding="async"` on below-fold images
+  - Contrast bumped on `text-white/70` and `text-white/60` lines
 
-### P0 — Immediate post-deploy
+### Live site smoke tests
 
-- [ ] Run `./scripts/set-url.sh https://<your-vercel-url>` to:
-  - Swap `[YOUR_VERCEL_URL]` in og:url, canonical, robots.txt, sitemap.xml
-  - Reroute the newsletter Bundle CTAs to point at the landing page (funnel newsletter → landing → Shopify)
-  - Then `git add . && git commit -m "Wire production URL" && git push`
-- [ ] Test the live URL on Android (Chrome) + iOS (Safari) — focus on sticky CTA + safe-area
-- [ ] Lighthouse audit (Chrome DevTools): target ≥ 90 on Performance, Accessibility, Best Practices, SEO
-- [ ] PageSpeed Insights https://pagespeed.web.dev/ — paste the Vercel URL
-- [ ] Open Graph preview check on https://www.opengraph.xyz/
+- [x] All 5 newsletter CTAs return HTTP 200 on the live URL with full UTM strings
+- [x] og:image accessible at `https://henna-pied.vercel.app/images/hero-banner.jpg`
+- [x] Landing renders the expected `<title>` + Hero copy
+- [x] Lighthouse mobile: **Performance 90 · Accessibility 93 · Best Practices 73 · SEO 100**
+  - LCP 3.5 s · FCP 1.6 s · CLS 0.001 · TBT 80 ms · SI 1.6 s
+
+### P0 — Still to verify (user-side)
+
+- [ ] **Re-run Lighthouse** after the LCP/contrast fixes to confirm Performance ≥ 95 and Accessibility ≥ 95
+- [ ] Test the live URL on a real Android (Chrome) + iOS (Safari) — focus on sticky CTA + safe-area
+- [ ] PageSpeed Insights https://pagespeed.web.dev/ (the API quota was hit during automated test, use the web UI)
+- [ ] Open Graph preview check at https://www.opengraph.xyz/url/https%3A%2F%2Fhenna-pied.vercel.app/
 
 ### P1 — Custom domain (optional but recommended)
 
