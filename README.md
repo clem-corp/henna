@@ -111,7 +111,7 @@ All 5 CTAs carry the same campaign tag:
 
 ---
 
-## TO-DO — Pre-send checklist
+## TO-DO — Newsletter (pre-send checklist)
 
 ### Legal blockers (cannot send without)
 
@@ -165,3 +165,97 @@ All 5 CTAs carry the same campaign tag:
 - [ ] Define KPI targets: Open >25%, CTR >3%, Conversion >1%
 - [ ] Set up Shopify Analytics attribution for `utm_campaign=henna_bundle_30`
 - [ ] Day-3 follow-up plan (resend to non-openers with a different subject line)
+
+---
+
+## TO-DO — Landing page
+
+### Already done
+
+- [x] Mobile-first responsive design (3 cards stack vertical, side-by-side on `md:`)
+- [x] Sticky bottom CTA on mobile, header CTA on desktop, with iOS safe-area inset
+- [x] Tailwind compiled to production: 3 MB CDN runtime → **19 KB minified `style.css`**
+- [x] SEO meta + Open Graph + Twitter Card + canonical
+- [x] Favicons: SVG (gold "R" on green), 32×32 PNG, 180×180 Apple touch icon
+- [x] `robots.txt` + `sitemap.xml`
+- [x] `vercel.json`: long cache on assets, security headers
+- [x] Plausible analytics snippet placed in `<head>` (commented, ready to activate)
+- [x] `scripts/set-url.sh` to swap placeholder URL everywhere after first deploy
+
+### P0 — Immediate post-deploy
+
+- [ ] Run `./scripts/set-url.sh https://<your-vercel-url>` to:
+  - Swap `[YOUR_VERCEL_URL]` in og:url, canonical, robots.txt, sitemap.xml
+  - Reroute the newsletter Bundle CTAs to point at the landing page (funnel newsletter → landing → Shopify)
+  - Then `git add . && git commit -m "Wire production URL" && git push`
+- [ ] Test the live URL on Android (Chrome) + iOS (Safari) — focus on sticky CTA + safe-area
+- [ ] Lighthouse audit (Chrome DevTools): target ≥ 90 on Performance, Accessibility, Best Practices, SEO
+- [ ] PageSpeed Insights https://pagespeed.web.dev/ — paste the Vercel URL
+- [ ] Open Graph preview check on https://www.opengraph.xyz/
+
+### P1 — Custom domain (optional but recommended)
+
+- [ ] Buy a domain (Namecheap / Cloudflare, ~$12/yr) — e.g. `henna-bundle.com`, `reshma-henna.com`
+- [ ] Vercel → Project Settings → Domains → Add → follow DNS instructions
+- [ ] Update `og:url`, canonical, sitemap, robots with the new domain
+- [ ] Re-run `set-url.sh` with the custom domain
+
+### P1 — Analytics / tracking
+
+- [ ] Pick the tool:
+  - **Plausible.io** — snippet already prepared in `<head>` as a comment. Sign up, uncomment, replace `YOUR_DOMAIN`
+  - **Google Analytics 4** — paste the gtag.js snippet into `<head>`
+  - **Vercel Analytics** — toggle on inside the Vercel dashboard (zero code)
+- [ ] Configure events: clicks on each CTA, scroll depth (25/50/75/100%), outbound clicks to reshmabeauty.com
+- [ ] Verify UTM parameters surface correctly in the analytics dashboard
+
+### P1 — Funnel → Shopify
+
+- [ ] Create the `HENNA30` automatic discount in Shopify Admin → Discounts (30% off Henna Shampoo + Henna Conditioner)
+- [ ] Test a real click from the landing → confirm Shopify cart opens with the bundle and -30% applied
+- [ ] Alternative if you don't want to create the code: re-point Bundle CTAs to the existing `Henna Haven Deluxe Hair Care Bundle` product
+
+### P2 — Content enrichment (lifts conversion)
+
+- [ ] Customer testimonials section (3-5 reviews with photos — pull from existing reshmabeauty.com reviews)
+- [ ] FAQ section (4-5 questions: color-treated hair, frequency of use, vegan, shipping, returns)
+- [ ] Real countdown timer synced with the offer end date (JS, e.g. `2d 14h 32m`)
+- [ ] Before/after hair photos (high-impact in cosmetics)
+- [ ] Trust badges row: "Made in USA", "Cruelty-Free", "100% Plant-Based"
+
+### P2 — Email capture (for non-buyers)
+
+- [ ] Exit-intent popup or banner: "Not ready? Grab 10% off your first order" → email capture
+- [ ] Wire it to Klaviyo / Mailchimp to nurture the list
+
+### P2 — Legal
+
+- [ ] Real postal address — replace `[REGISTERED ADDRESS]` in the footer (same blocker as the newsletter)
+- [ ] No cookie banner needed if Plausible. Required if GA4 is used and traffic includes EU
+- [ ] Verify Privacy / Terms / Contact links resolve to existing pages on reshmabeauty.com
+
+### P3 — Post-launch optimization
+
+- [ ] Heatmap: Hotjar (free up to 35 sessions/day) or Microsoft Clarity (free, unlimited)
+- [ ] A/B tests:
+  - CTA color (gold vs brown)
+  - Hero headline ("Stronger, Fuller Hair" vs "Save 30% This Week")
+  - Mobile card order (Bundle first?)
+- [ ] KPI targets:
+  - Bounce rate < 50%
+  - Time on page > 45 sec
+  - CTR to Shopify > 8%
+  - Landing → purchase conversion > 3%
+
+### Recommended sequence
+
+| Priority | Task | Time |
+|---|---|---|
+| **P0** (now)        | Provide Vercel URL → run `set-url.sh`        | 2 min |
+| **P0**              | Lighthouse + PageSpeed on the live URL       | 5 min |
+| **P1** (this week)  | Activate Plausible + Vercel Analytics        | 15 min |
+| **P1**              | Create Shopify `HENNA30` discount             | 10 min |
+| **P1**              | Test landing → Shopify checkout              | 5 min |
+| **P2**              | Add testimonials + FAQ section               | 1 h |
+| **P2**              | Real postal address in footer                | 5 min |
+| **P3** (post-launch) | Heatmap + A/B tests                          | continuous |
