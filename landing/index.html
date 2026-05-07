@@ -55,8 +55,41 @@
 
 <body class="bg-bg text-ink pb-24 md:pb-0">
 
+  <!-- ============ STICKY PROMO BANNER ============ -->
+  <div id="promo-banner" class="sticky top-0 z-50 bg-green1 text-white border-b border-gold/15 shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 md:px-6 h-10 md:h-12 flex items-center justify-center gap-2 sm:gap-3 md:gap-5 flex-nowrap overflow-hidden">
+
+      <span class="hidden sm:inline-block text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-gold whitespace-nowrap">
+        ★ Save 30% OFF · Bundle ends in
+      </span>
+      <span class="sm:hidden text-[10px] font-semibold uppercase tracking-[0.15em] text-gold whitespace-nowrap">
+        30% OFF · ends in
+      </span>
+
+      <div id="countdown" role="timer" aria-live="polite"
+           class="inline-flex items-baseline tabular-nums text-sm md:text-base font-bold whitespace-nowrap font-serif">
+        <span id="cd-days" class="text-white">--</span><span class="text-gold/70 ml-0.5 text-[9px] md:text-[10px] uppercase tracking-wider">d</span>
+        <span class="text-gold/40 mx-1 md:mx-1.5">:</span>
+        <span id="cd-hours" class="text-white">--</span><span class="text-gold/70 ml-0.5 text-[9px] md:text-[10px] uppercase tracking-wider">h</span>
+        <span class="text-gold/40 mx-1 md:mx-1.5">:</span>
+        <span id="cd-minutes" class="text-white">--</span><span class="text-gold/70 ml-0.5 text-[9px] md:text-[10px] uppercase tracking-wider">m</span>
+        <span class="text-gold/40 mx-1 md:mx-1.5">:</span>
+        <span id="cd-seconds" class="text-white">--</span><span class="text-gold/70 ml-0.5 text-[9px] md:text-[10px] uppercase tracking-wider">s</span>
+      </div>
+
+      <a href="https://reshmabeauty.com/collections/shampoo-conditioner?discount=HENNA30&amp;utm_source=landing&amp;utm_medium=banner&amp;utm_campaign=henna_bundle_30&amp;utm_content=banner_unlock"
+         class="hidden md:inline-flex items-center bg-gold hover:bg-white text-green1 text-[10px] md:text-xs font-bold uppercase tracking-wider px-3 md:px-4 py-1.5 rounded transition whitespace-nowrap">
+        Unlock 30% &rarr;
+      </a>
+    </div>
+
+    <div id="countdown-expired" class="hidden bg-brown text-white text-[11px] uppercase tracking-[0.25em] text-center py-2 font-semibold">
+      ⏰ Promo ended — keep an eye on your inbox for the next drop.
+    </div>
+  </div>
+
   <!-- ============ HEADER ============ -->
-  <header class="sticky top-0 z-40 bg-bg/90 backdrop-blur-md border-b border-green1/10">
+  <header class="sticky top-10 md:top-12 z-40 bg-bg/90 backdrop-blur-md border-b border-green1/10">
     <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 md:py-4 flex items-center justify-between">
       <a href="#top" class="flex items-center gap-2 shrink-0">
         <img src="images/logo-reshma.png" alt="Reshma Beauty" width="400" height="210" class="h-7 md:h-9 w-auto">
@@ -108,66 +141,6 @@
     </div>
   </section>
 
-  <!-- ============ COUNTDOWN (botanical-wellness, palette du site) ============ -->
-  <section aria-label="Bundle promotion countdown" class="bg-bg px-5 md:px-8 py-14 md:py-20 border-y border-green1/10">
-    <div class="max-w-3xl mx-auto text-center">
-      <span class="inline-block text-brown text-[10px] md:text-xs font-semibold uppercase tracking-[0.35em] mb-5">
-        ✦ Limited Time Offer ✦
-      </span>
-
-      <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-green1 leading-[1.0] mb-3">
-        Save <span class="text-gold">30% OFF</span>
-      </h2>
-      <p class="font-serif italic text-xl sm:text-2xl md:text-3xl text-green2 mb-9 md:mb-12">
-        The Complete Bundle
-      </p>
-
-      <div id="countdown" role="timer" aria-live="polite"
-           class="inline-flex items-start gap-2 sm:gap-3 md:gap-4 mb-9 md:mb-12">
-
-        <div class="text-center">
-          <div class="bg-white rounded-xl px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 min-w-[58px] sm:min-w-[68px] md:min-w-[82px] border border-green1/10 shadow-sm">
-            <div id="cd-days" class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-green1 tabular-nums leading-none">--</div>
-          </div>
-          <span class="block mt-2.5 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-brown font-semibold">Days</span>
-        </div>
-
-        <div class="text-center">
-          <div class="bg-white rounded-xl px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 min-w-[58px] sm:min-w-[68px] md:min-w-[82px] border border-green1/10 shadow-sm">
-            <div id="cd-hours" class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-green1 tabular-nums leading-none">--</div>
-          </div>
-          <span class="block mt-2.5 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-brown font-semibold">Hours</span>
-        </div>
-
-        <div class="text-center">
-          <div class="bg-white rounded-xl px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 min-w-[58px] sm:min-w-[68px] md:min-w-[82px] border border-green1/10 shadow-sm">
-            <div id="cd-minutes" class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-green1 tabular-nums leading-none">--</div>
-          </div>
-          <span class="block mt-2.5 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-brown font-semibold">Minutes</span>
-        </div>
-
-        <div class="text-center">
-          <div class="bg-white rounded-xl px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 min-w-[58px] sm:min-w-[68px] md:min-w-[82px] border border-green1/10 shadow-sm">
-            <div id="cd-seconds" class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-green1 tabular-nums leading-none">--</div>
-          </div>
-          <span class="block mt-2.5 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-brown font-semibold">Seconds</span>
-        </div>
-      </div>
-
-      <a href="https://reshmabeauty.com/collections/shampoo-conditioner?discount=HENNA30&amp;utm_source=landing&amp;utm_medium=countdown_cta&amp;utm_campaign=henna_bundle_30&amp;utm_content=countdown_unlock"
-         class="inline-block bg-gold hover:bg-white text-green1 font-bold uppercase tracking-[0.2em] text-sm md:text-base px-10 md:px-12 py-4 md:py-5 rounded-md shadow-lg ring-1 ring-green1/10 transition transform hover:-translate-y-0.5 hover:scale-[1.01]">
-        Unlock My 30% Bundle &rarr;
-      </a>
-
-      <p class="text-[11px] md:text-xs text-ink/50 mt-5 tracking-wider">
-        Offer ends Sunday, May 10 · 11:59 PM PST
-      </p>
-
-      <p id="countdown-expired" class="hidden mt-4 text-brown text-xs uppercase tracking-[0.25em] font-semibold">
-        ⏰ Promo ended — keep an eye on your inbox for the next drop.
-      </p>
-    </div>
-  </section>
 
   <!-- ============ OFFER CARDS ============ -->
   <section id="products" class="max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-24 lg:py-28">
