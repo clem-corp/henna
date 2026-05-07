@@ -1,0 +1,14 @@
+{
+  "name": "reshma-henna-landing",
+  "version": "1.0.0",
+  "description": "Reshma Beauty — Henna Haircare landing page (Tailwind, mobile-first, sticky CTA)",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./style.css --minify",
+    "dev":   "tailwindcss -i ./src/input.css -o ./style.css --watch",
+    "deploy": "vercel deploy --prod"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

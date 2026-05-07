@@ -4,42 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#1B3B26" />
+  <meta name="robots" content="index, follow" />
+
   <title>Reshma Beauty — Henna Haircare Bundle 30% Off</title>
   <meta name="description" content="Save 30% on the Henna Shampoo + Conditioner bundle. Botanical Ayurvedic haircare, sulfate & paraben free, color-safe." />
 
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Save 30% on Reshma Beauty Henna Haircare Bundle" />
+  <meta property="og:description" content="Botanical henna shampoo + conditioner — strengthens, volumizes, color-safe. -30% this week only." />
+  <meta property="og:image" content="images/hero-banner.jpg" />
+  <meta property="og:url" content="https://[YOUR_VERCEL_URL]/" />
+  <meta property="og:site_name" content="Reshma Beauty" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Save 30% on Reshma Beauty Henna Haircare Bundle" />
+  <meta name="twitter:description" content="Botanical henna shampoo + conditioner — -30% this week only." />
+  <meta name="twitter:image" content="images/hero-banner.jpg" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+  <!-- Canonical (update with real URL after Vercel deploy) -->
+  <link rel="canonical" href="https://[YOUR_VERCEL_URL]/" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg:     '#F9F9F7',
-            green1: '#1B3B26',
-            green2: '#3D6346',
-            brown:  '#704F37',
-            gold:   '#F2C94C',
-            ink:    '#1A1A1A',
-          },
-          fontFamily: {
-            sans:  ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <!-- Compiled Tailwind CSS (19 KB minified) -->
+  <link rel="stylesheet" href="style.css" />
 
-  <style>
-    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-    .font-serif { font-family: 'Cormorant Garamond', serif; }
-    /* Hide horizontal scroll on small phones */
-    body { overflow-x: hidden; }
-  </style>
+  <!-- Analytics: Plausible (privacy-friendly, no cookies, no banner needed)
+       Activate by signing up at plausible.io and replacing YOUR_DOMAIN below.
+       For Google Analytics 4 instead, paste your gtag.js snippet here.
+  <script defer data-domain="YOUR_DOMAIN" src="https://plausible.io/js/script.outbound-links.js"></script>
+  -->
 </head>
 
 <body class="bg-bg text-ink pb-24 md:pb-0">
@@ -48,7 +52,7 @@
   <header class="sticky top-0 z-40 bg-bg/90 backdrop-blur-md border-b border-green1/10">
     <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 md:py-4 flex items-center justify-between">
       <a href="#top" class="flex items-center gap-2 shrink-0">
-        <img src="../images/logo-reshma.png" alt="Reshma Beauty" class="h-7 md:h-9 w-auto">
+        <img src="images/logo-reshma.png" alt="Reshma Beauty" class="h-7 md:h-9 w-auto">
       </a>
 
       <nav class="hidden md:flex items-center gap-7 lg:gap-10 text-sm font-medium text-green1">
@@ -68,7 +72,7 @@
 
   <!-- ============ HERO ============ -->
   <section id="top" class="relative w-full h-[85vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] overflow-hidden">
-    <img src="../images/hero-banner.jpg"
+    <img src="images/hero-banner.jpg"
          alt="Botanical henna haircare ritual"
          class="absolute inset-0 w-full h-full object-cover object-center" />
     <div class="absolute inset-0 bg-gradient-to-b from-green1/30 via-green1/40 to-green1/80"></div>
@@ -108,7 +112,7 @@
       <!-- ----- CARD 1 — SHAMPOO ----- -->
       <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
         <div class="overflow-hidden">
-          <img src="../images/shampoo-bottle.jpg"
+          <img src="images/shampoo-bottle.jpg"
                alt="Reshma Beauty Henna Shampoo bottle"
                class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition duration-500">
         </div>
@@ -144,10 +148,10 @@
           ★ Best Value
         </span>
         <div class="grid grid-cols-2">
-          <img src="../images/shampoo-bottle.jpg"
+          <img src="images/shampoo-bottle.jpg"
                alt="Henna Shampoo"
                class="w-full aspect-square object-cover">
-          <img src="../images/conditioner-bottle.jpg"
+          <img src="images/conditioner-bottle.jpg"
                alt="Henna Conditioner"
                class="w-full aspect-square object-cover">
         </div>
@@ -184,7 +188,7 @@
       <!-- ----- CARD 3 — CONDITIONER ----- -->
       <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
         <div class="overflow-hidden">
-          <img src="../images/conditioner-bottle.jpg"
+          <img src="images/conditioner-bottle.jpg"
                alt="Reshma Beauty Henna Conditioner bottle"
                class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition duration-500">
         </div>
@@ -219,7 +223,7 @@
   <!-- ============ STORY / LIFESTYLE ============ -->
   <section id="story" class="bg-green1 text-white py-16 md:py-24 lg:py-28">
     <div class="max-w-7xl mx-auto px-5 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 lg:gap-20 items-center">
-      <img src="../images/botanical-lifestyle.jpg"
+      <img src="images/botanical-lifestyle.jpg"
            alt="Botanical Ayurvedic ingredients arrangement"
            class="w-full rounded-2xl object-cover aspect-[4/3] md:aspect-[5/4] shadow-xl order-1 md:order-1">
       <div class="order-2 md:order-2">
@@ -296,7 +300,7 @@
   <!-- ============ FOOTER ============ -->
   <footer class="bg-green1 text-white/80 pt-14 pb-10 px-5 md:px-8">
     <div class="max-w-7xl mx-auto text-center">
-      <img src="../images/logo-reshma.png" class="h-10 w-auto mx-auto mb-3" alt="Reshma Beauty">
+      <img src="images/logo-reshma.png" class="h-10 w-auto mx-auto mb-3" alt="Reshma Beauty">
       <p class="text-xs tracking-[0.3em] uppercase text-gold mb-8">Botanical Henna Haircare</p>
 
       <div class="flex justify-center gap-5 md:gap-7 mb-8 text-sm">

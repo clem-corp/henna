@@ -1,18 +1,60 @@
-# Reshma Beauty — Henna Haircare Newsletter
+# Reshma Beauty — Henna Haircare Campaign
 
-Production-ready responsive HTML email promoting the Henna Shampoo + Conditioner with a 30% bundle discount.
+Two-piece marketing funnel for the Henna Shampoo + Conditioner bundle (-30%):
+
+1. **Email newsletter** (`/index.html`) — table-based, inline CSS, ESP-ready
+2. **Landing page** (`/landing/`) — Tailwind, mobile-first, sticky CTA, Vercel-ready
 
 ## File structure
 
 ```
 .
-├── index.html               Email template (table-based, inline CSS)
-└── images/                  Compressed assets (~580 KB total)
-    ├── logo-reshma.png
-    ├── hero-banner.jpg
-    ├── shampoo-bottle.jpg
-    ├── conditioner-bottle.jpg
-    └── botanical-lifestyle.jpg
+├── index.html                Newsletter (table-based, inline CSS)
+├── images/                   Newsletter assets (~580 KB)
+├── landing/
+│   ├── index.html            Landing page
+│   ├── style.css             Compiled Tailwind (19 KB minified)
+│   ├── src/input.css         Tailwind source
+│   ├── tailwind.config.js
+│   ├── package.json          npm run build / dev / deploy
+│   ├── vercel.json           Vercel config (cache headers, security headers)
+│   ├── favicon.svg           Brand favicon (R initial, gold on green)
+│   ├── favicon-32.png        Fallback PNG favicon
+│   ├── apple-touch-icon.png  iOS home-screen icon
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── images/               Same assets as newsletter (self-contained for Vercel)
+├── scripts/
+│   └── set-url.sh            Run after first Vercel deploy to swap [YOUR_VERCEL_URL]
+└── README.md
+```
+
+## Deploy the landing page to Vercel
+
+**Option A — Web UI (zero CLI):**
+
+1. Go to https://vercel.com/new
+2. Import the `jflpro/henna` repo
+3. Set **Root Directory** to `landing`
+4. **Framework preset**: `Other`
+5. **Build Command**: `npm run build`
+6. **Output Directory**: `.`
+7. Click **Deploy**
+
+**Option B — CLI:**
+
+```bash
+cd landing
+npx vercel login    # browser flow
+npx vercel deploy --prod
+```
+
+**After first deploy** — Vercel gives you a URL like `https://reshma-henna.vercel.app`.
+Run the helper to swap it everywhere (Open Graph, canonical, sitemap, robots, AND newsletter CTAs):
+
+```bash
+./scripts/set-url.sh https://reshma-henna.vercel.app
+git add . && git commit -m "Wire production URL" && git push
 ```
 
 ## Tech specs
