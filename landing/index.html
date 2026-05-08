@@ -493,46 +493,47 @@
     </div>
   </template>
 
-  <!-- ============ TEMPLATE: Upsell free shipping ============ -->
+  <!-- ============ TEMPLATE: Upsell — pick your option (each card IS the button) ============ -->
   <template id="tpl-upsell">
-    <div class="text-center">
-      <span class="inline-block bg-[#EAB308] text-[#1A2E1A] text-[10px] font-extrabold uppercase tracking-[0.25em] px-3 py-1.5 rounded-full mb-5">
-        ★ One More Thing
-      </span>
-      <h2 id="panel-title" class="font-serif text-2xl sm:text-3xl text-[#1A2E1A] leading-tight mb-2">
-        Take 2 Bundles → <span class="text-[#EAB308]">Free Shipping</span>
-      </h2>
-      <p class="text-sm text-[#1A2E1A]/70 mb-6">
-        Add a second bundle and we cover the shipping (save $10).
-      </p>
-
-      <div class="space-y-3 mb-6 text-left">
-        <div class="bg-white border border-[#1A2E1A]/10 rounded-xl p-4 flex items-center justify-between">
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">1 Bundle</p>
-            <p class="font-serif text-2xl text-[#1A2E1A] font-bold">$22.39</p>
-            <p class="text-xs text-[#1A2E1A]/60">+ Shipping ~$10</p>
-          </div>
-          <span class="text-[#1A2E1A]/30 text-3xl font-light">×1</span>
-        </div>
-        <div class="bg-[#1A2E1A] text-white border border-[#EAB308]/40 ring-2 ring-[#EAB308] rounded-xl p-4 flex items-center justify-between relative">
-          <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2 Bundles</p>
-            <p class="font-serif text-2xl text-white font-bold">$44.78</p>
-            <p class="text-xs text-[#EAB308] font-semibold">FREE shipping · Save $10</p>
-          </div>
-          <span class="text-[#EAB308]/60 text-3xl font-light">×2</span>
-        </div>
+    <div>
+      <div class="text-center mb-6">
+        <span class="inline-block bg-[#EAB308] text-[#1A2E1A] text-[10px] font-extrabold uppercase tracking-[0.25em] px-3 py-1.5 rounded-full mb-3">
+          ★ Pick Your Option
+        </span>
+        <h2 id="panel-title" class="font-serif text-2xl sm:text-3xl text-[#1A2E1A] leading-tight">
+          One bundle or two?
+        </h2>
+        <p class="text-sm text-[#1A2E1A]/65 mt-2">Tap your choice to continue</p>
       </div>
 
-      <button data-action="upsell-yes"
-              class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-3">
-        Yes — Get 2 with Free Shipping
-      </button>
-      <button data-action="upsell-no"
-              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 transition">
-        No, just 1 bundle
+      <div class="space-y-3 mb-3">
+        <!-- Card-button: 1 bundle -->
+        <button type="button" data-action="upsell-no"
+                class="w-full text-left bg-white border-2 border-[#1A2E1A]/10 hover:border-[#1A2E1A]/40 hover:bg-[#1A2E1A]/[0.02] rounded-xl p-4 flex items-center justify-between gap-3 transition active:scale-[0.99]">
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">1 Bundle</p>
+            <p class="font-serif text-2xl text-[#1A2E1A] font-bold leading-tight">$22.39</p>
+            <p class="text-xs text-[#1A2E1A]/60">+ Shipping ~$10</p>
+          </div>
+          <span class="text-[#1A2E1A]/30 group-hover:text-[#1A2E1A] text-xs uppercase tracking-wider font-bold whitespace-nowrap">Continue →</span>
+        </button>
+
+        <!-- Card-button: 2 bundles (highlighted) -->
+        <button type="button" data-action="upsell-yes"
+                class="w-full text-left bg-[#1A2E1A] text-white ring-2 ring-[#EAB308] hover:bg-[#0f1f0f] rounded-xl p-4 flex items-center justify-between gap-3 relative transition active:scale-[0.99]">
+          <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2 Bundles</p>
+            <p class="font-serif text-2xl text-white font-bold leading-tight">$44.78</p>
+            <p class="text-xs text-[#EAB308] font-semibold">FREE shipping · Save $10</p>
+          </div>
+          <span class="text-[#EAB308] text-xs uppercase tracking-wider font-bold whitespace-nowrap">Continue →</span>
+        </button>
+      </div>
+
+      <button data-panel-close
+              class="block w-full text-[#1A2E1A]/55 hover:text-[#1A2E1A] text-sm py-2 mt-3 transition">
+        Cancel
       </button>
     </div>
   </template>
@@ -572,7 +573,7 @@
     </div>
   </template>
 
-  <!-- ============ TEMPLATE: Compare (Duo vs 2× Duo with selector) ============ -->
+  <!-- ============ TEMPLATE: Compare — pick the right deal (each card IS the button) ============ -->
   <template id="tpl-compare">
     <div>
       <div class="text-center mb-6">
@@ -580,53 +581,46 @@
         <h2 id="panel-title" class="font-serif text-2xl sm:text-3xl text-[#1A2E1A] leading-tight">
           Maximize your savings
         </h2>
+        <p class="text-sm text-[#1A2E1A]/65 mt-2">Tap your choice to continue</p>
       </div>
 
-      <div class="space-y-3 mb-6">
-        <!-- Option Duo -->
-        <label class="block bg-white border-2 border-[#EAB308] rounded-xl p-4 cursor-pointer ring-2 ring-[#EAB308]/0 has-[:checked]:ring-[#EAB308] transition relative">
-          <input type="radio" name="compare-option" value="duo" checked class="sr-only" />
+      <div class="space-y-3 mb-3">
+        <!-- Card-button: The Duo (Recommended) -->
+        <button type="button" data-action="compare-duo"
+                class="w-full text-left bg-white border-2 border-[#EAB308] hover:bg-[#EAB308]/5 rounded-xl p-4 flex items-start justify-between gap-3 relative transition active:scale-[0.99]">
           <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Recommended</span>
-          <div class="flex items-start justify-between gap-3 mt-1">
-            <div class="flex-1">
-              <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">The Duo</p>
-              <h3 class="font-serif text-xl text-[#1A2E1A] mb-1">Shampoo + Conditioner</h3>
-              <p class="text-xs text-[#1A2E1A]/60">Full Ayurvedic ritual</p>
-              <div class="flex items-baseline gap-2 mt-2">
-                <span class="text-[#1A2E1A]/40 line-through text-sm">$31.98</span>
-                <span class="font-serif text-2xl text-[#1A2E1A] font-bold">$22.39</span>
-                <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">-30%</span>
-              </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">The Duo</p>
+            <h3 class="font-serif text-xl text-[#1A2E1A] mb-1">Shampoo + Conditioner</h3>
+            <p class="text-xs text-[#1A2E1A]/60">Full Ayurvedic ritual</p>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-[#1A2E1A]/40 line-through text-sm">$31.98</span>
+              <span class="font-serif text-2xl text-[#1A2E1A] font-bold">$22.39</span>
+              <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">-30%</span>
             </div>
-            <span class="w-6 h-6 rounded-full border-2 border-[#1A2E1A]/30 [input:checked~div_&]:border-[#EAB308] [input:checked~div_&]:bg-[#EAB308] flex items-center justify-center shrink-0 text-[#1A2E1A] font-bold text-sm">✓</span>
           </div>
-        </label>
+          <span class="text-[#EAB308] text-xs uppercase tracking-wider font-bold whitespace-nowrap pt-1">Continue →</span>
+        </button>
 
-        <!-- Option 2x Duo -->
-        <label class="block bg-[#1A2E1A] text-white rounded-xl p-4 cursor-pointer relative">
-          <input type="radio" name="compare-option" value="2duo" class="sr-only" />
+        <!-- Card-button: 2× The Duo (Best Value) -->
+        <button type="button" data-action="compare-2duo"
+                class="w-full text-left bg-[#1A2E1A] text-white rounded-xl p-4 flex items-start justify-between gap-3 relative transition active:scale-[0.99] hover:bg-[#0f1f0f]">
           <span class="absolute -top-2.5 left-4 bg-white text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
-          <div class="flex items-start justify-between gap-3 mt-1">
-            <div class="flex-1">
-              <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2× The Duo</p>
-              <h3 class="font-serif text-xl mb-1">Two Bundles</h3>
-              <p class="text-xs text-white/70">FREE shipping (save $10)</p>
-              <div class="flex items-baseline gap-2 mt-2">
-                <span class="font-serif text-2xl text-[#EAB308] font-bold">$44.78</span>
-                <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">FREE SHIP</span>
-              </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2× The Duo</p>
+            <h3 class="font-serif text-xl mb-1">Two Bundles</h3>
+            <p class="text-xs text-white/70">FREE shipping (save $10)</p>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="font-serif text-2xl text-[#EAB308] font-bold">$44.78</span>
+              <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">FREE SHIP</span>
             </div>
-            <span class="w-6 h-6 rounded-full border-2 border-white/30 flex items-center justify-center shrink-0 text-white text-sm">✓</span>
           </div>
-        </label>
+          <span class="text-[#EAB308] text-xs uppercase tracking-wider font-bold whitespace-nowrap pt-1">Continue →</span>
+        </button>
       </div>
 
-      <button data-action="compare-go"
-              class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-2">
-        Continue to Checkout →
-      </button>
       <button data-panel-close
-              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 transition">
+              class="block w-full text-[#1A2E1A]/55 hover:text-[#1A2E1A] text-sm py-2 mt-3 transition">
         Cancel
       </button>
     </div>
@@ -778,11 +772,11 @@
           var v = p === 'shampoo' ? VARIANT.shampoo : VARIANT.conditioner;
           window.location.href = cartUrl(v, 1, 'panel_solo_' + p);
         }
-        else if (action === 'compare-go') {
-          var sel = panel.querySelector('input[name="compare-option"]:checked');
-          var val = sel ? sel.value : 'duo';
-          var qty = val === '2duo' ? 2 : 1;
-          window.location.href = cartUrl(VARIANT.bundle, qty, 'panel_compare_' + val);
+        else if (action === 'compare-duo') {
+          window.location.href = cartUrl(VARIANT.bundle, 1, 'panel_compare_duo');
+        }
+        else if (action === 'compare-2duo') {
+          window.location.href = cartUrl(VARIANT.bundle, 2, 'panel_compare_2duo');
         }
       });
 
