@@ -685,20 +685,38 @@
       }
 
       // Decide which side the panel slides in from based on template + context.
-      // Shampoo opens from the LEFT. Everything else opens from the RIGHT.
+      // Bundle opens CENTERED. Shampoo from LEFT. Everything else from RIGHT.
       function panelSideFor(template, ctx) {
+        if (template === 'bundle') return 'center';
         if (template === 'product' && ctx && ctx.product === 'shampoo') return 'left';
         return 'right';
       }
-      // Apply the right starting classes for the slide-in side BEFORE the
-      // first paint. The card sits off-screen on the chosen side, then JS
-      // pulls it back into view via translate-x-0.
+      // Apply the right starting classes for the chosen mode BEFORE the
+      // first paint. Side modes start off-screen (translate-x-full); center
+      // mode is positioned via inline styles and starts at scale(0.95)
+      // opacity 0.
       function setPanelSide(side) {
-        if (side === 'left') {
-          card.classList.remove('right-0', 'translate-x-full');
+        // strip any prior mode
+        card.classList.remove('right-0', 'left-0', 'translate-x-full', '-translate-x-full', 'rounded-2xl');
+        card.style.top = '';
+        card.style.left = '';
+        card.style.width = '';
+        card.style.maxHeight = '';
+        card.style.transform = '';
+        card.style.opacity = '';
+        card.dataset.mode = side;
+
+        if (side === 'center') {
+          card.style.top = '50%';
+          card.style.left = '50%';
+          card.style.width = 'min(92vw, 420px)';
+          card.style.maxHeight = '90vh';
+          card.style.transform = 'translate(-50%, -50%) scale(0.95)';
+          card.style.opacity = '0';
+          card.classList.add('rounded-2xl');
+        } else if (side === 'left') {
           card.classList.add('left-0', '-translate-x-full');
         } else {
-          card.classList.remove('left-0', '-translate-x-full');
           card.classList.add('right-0', 'translate-x-full');
         }
       }
@@ -728,15 +746,22 @@
         // animate on next frame
         requestAnimationFrame(function(){
           backdrop.classList.add('opacity-100');
-          card.classList.remove('translate-x-full', '-translate-x-full');
+          if (card.dataset.mode === 'center') {
+            card.style.transform = 'translate(-50%, -50%) scale(1)';
+            card.style.opacity = '1';
+          } else {
+            card.classList.remove('translate-x-full', '-translate-x-full');
+          }
         });
         document.body.style.overflow = 'hidden';
       }
 
       function closePanel() {
         backdrop.classList.remove('opacity-100');
-        // slide out in the same direction the card came from
-        if (card.classList.contains('left-0')) {
+        if (card.dataset.mode === 'center') {
+          card.style.transform = 'translate(-50%, -50%) scale(0.95)';
+          card.style.opacity = '0';
+        } else if (card.dataset.mode === 'left') {
           card.classList.add('-translate-x-full');
         } else {
           card.classList.add('translate-x-full');
