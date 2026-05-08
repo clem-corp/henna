@@ -765,6 +765,14 @@
       });
 
       // ===== Auto-trigger guards =====
+      // Hovers ignore the global gate so each card can still fire its own
+      // popup (each card already fires at most once via popupFired). Time
+      // and exit-intent triggers DO respect the global gate so they don't
+      // spam the user after a dismissal.
+      function hoverOpen(template, ctx) {
+        if (isOpen()) return;
+        openPanel(template, ctx);
+      }
       function autoOpen(template, ctx) {
         if (autoDisabled || isOpen()) return;
         openPanel(template, ctx);
@@ -782,9 +790,9 @@
             hoverTimer = setTimeout(function(){
               el.dataset.popupFired = '1';
               if (spec.indexOf('product:') === 0) {
-                autoOpen('product', { product: spec.split(':')[1] });
+                hoverOpen('product', { product: spec.split(':')[1] });
               } else {
-                autoOpen(spec);
+                hoverOpen(spec);
               }
             }, HOVER_DELAY);
           });
