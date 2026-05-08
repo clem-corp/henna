@@ -57,7 +57,7 @@
 <body class="bg-bg text-ink pt-[72px] sm:pt-14 pb-24 md:pb-0">
 
   <!-- ============ FIXED PROMO BANNER — same content on all screens ============ -->
-  <div id="promo-banner" class="fixed top-0 left-0 right-0 z-50 bg-green1 text-white shadow-sm h-[72px] sm:h-14">
+  <div id="promo-banner" data-hover-popup="bundle" class="fixed top-0 left-0 right-0 z-50 bg-green1 text-white shadow-sm h-[72px] sm:h-14">
     <div class="max-w-7xl mx-auto px-4 md:px-8 h-full flex flex-wrap items-center content-center justify-center gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-1">
 
       <span class="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-gold whitespace-nowrap">
@@ -157,7 +157,7 @@
     <div id="bundle" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-7 lg:gap-8">
 
       <!-- ----- CARD 1 — SHAMPOO ----- -->
-      <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
+      <article data-hover-popup="product:shampoo" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
         <div class="overflow-hidden">
           <img src="images/shampoo-bottle.jpg"
                alt="Reshma Beauty Henna Shampoo bottle"
@@ -193,7 +193,7 @@
       </article>
 
       <!-- ----- CARD 2 — BUNDLE (HIGHLIGHTED) ----- -->
-      <article class="bg-green1 text-white rounded-2xl overflow-hidden shadow-2xl ring-2 ring-gold relative md:scale-[1.04] md:-translate-y-3 flex flex-col">
+      <article data-hover-popup="bundle" class="bg-green1 text-white rounded-2xl overflow-hidden shadow-2xl ring-2 ring-gold relative md:scale-[1.04] md:-translate-y-3 flex flex-col">
         <span class="absolute top-4 left-4 bg-gold text-green1 text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full z-10 shadow-md">
           ★ Best Value
         </span>
@@ -240,7 +240,7 @@
       </article>
 
       <!-- ----- CARD 3 — CONDITIONER ----- -->
-      <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
+      <article data-hover-popup="product:conditioner" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition duration-300 flex flex-col group">
         <div class="overflow-hidden">
           <img src="images/conditioner-bottle.jpg"
                alt="Reshma Beauty Henna Conditioner bottle"
@@ -434,290 +434,384 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- ============ CONVERSION FUNNEL POPUPS ====================== -->
+  <!-- ============ SIDE-PANEL CONVERSION FUNNEL ================== -->
   <!-- ============================================================ -->
 
-  <!-- Popup #1 — Exit-intent Duo offer -->
-  <div id="popup-duo" data-popup class="hidden fixed inset-0 z-[100] items-center justify-center px-4 py-6">
-    <div class="popup-backdrop absolute inset-0 bg-[#1a2e1a]/70 backdrop-blur-md" data-popup-close></div>
-    <div class="popup-card relative w-full max-w-md bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl ring-1 ring-[#1a2e1a]/10 overflow-hidden">
-      <button data-popup-close aria-label="Close"
-              class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#1a2e1a] flex items-center justify-center text-xl font-light transition shadow">
+  <!-- Backdrop + slide-in panel — solid background (#F9F9F7), slides in from right -->
+  <div id="side-panel" class="hidden fixed inset-0 z-[100]" aria-hidden="true">
+    <div id="panel-backdrop" data-panel-close
+         class="absolute inset-0 bg-[#1A2E1A]/45 opacity-0 transition-opacity duration-300"></div>
+    <aside id="panel-card" role="dialog" aria-modal="true" aria-labelledby="panel-title"
+           class="absolute inset-y-0 right-0 h-full w-full sm:w-[420px] md:w-[460px] bg-[#F9F9F7] shadow-2xl translate-x-full transition-transform duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto">
+      <button data-panel-close aria-label="Close"
+              class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white border border-[#1A2E1A]/15 hover:bg-[#1A2E1A] hover:text-white text-[#1A2E1A] transition flex items-center justify-center text-2xl font-light shadow">
         ×
       </button>
-      <div class="p-6 sm:p-8 text-center">
-        <span class="inline-block bg-[#eab308] text-[#1a2e1a] text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1 rounded-full mb-4">
-          ★ Wait — Don't Leave
-        </span>
-        <h2 class="font-serif text-3xl sm:text-4xl text-[#1a2e1a] leading-tight mb-2">
-          Save <span class="text-[#eab308]">30% OFF</span>
+      <div id="panel-content" class="p-6 sm:p-8 pt-16"></div>
+    </aside>
+  </div>
+
+  <!-- ============ TEMPLATE: Bundle / Duo offer ============ -->
+  <template id="tpl-bundle">
+    <div class="text-center">
+      <span class="inline-block bg-[#EAB308] text-[#1A2E1A] text-[10px] font-extrabold uppercase tracking-[0.25em] px-3 py-1.5 rounded-full mb-5">
+        ★ Limited Time · 30% OFF
+      </span>
+      <h2 id="panel-title" class="font-serif text-3xl sm:text-4xl text-[#1A2E1A] leading-tight mb-1">
+        Save <span class="text-[#EAB308]">30% OFF</span>
+      </h2>
+      <p class="font-serif italic text-lg text-[#1A2E1A]/70 mb-5">The Complete Bundle</p>
+
+      <div class="bg-white rounded-xl border border-[#1A2E1A]/10 overflow-hidden mb-5">
+        <div class="grid grid-cols-2">
+          <img src="images/shampoo-bottle.jpg" alt="" class="w-full aspect-square object-cover">
+          <img src="images/conditioner-bottle.jpg" alt="" class="w-full aspect-square object-cover">
+        </div>
+      </div>
+
+      <p class="text-sm text-[#1A2E1A]/75 mb-5 leading-relaxed">
+        Henna Shampoo + Conditioner — your full Ayurvedic ritual at our lowest price ever.
+      </p>
+
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <span class="text-[#1A2E1A]/40 line-through text-base">$31.98</span>
+        <span class="font-serif text-3xl text-[#1A2E1A] font-bold">$22.39</span>
+        <span class="text-[10px] uppercase tracking-wider bg-[#EAB308] text-[#1A2E1A] font-bold px-2 py-0.5 rounded">Save 30%</span>
+      </div>
+
+      <button data-action="bundle-yes"
+              class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-3">
+        Profiter de l'offre →
+      </button>
+      <button data-panel-close
+              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 transition">
+        No thanks
+      </button>
+      <p class="text-[10px] text-[#1A2E1A]/50 mt-4 uppercase tracking-wider">
+        ⏰ Offer ends Sunday · 11:59 PM PST
+      </p>
+    </div>
+  </template>
+
+  <!-- ============ TEMPLATE: Upsell free shipping ============ -->
+  <template id="tpl-upsell">
+    <div class="text-center">
+      <span class="inline-block bg-[#EAB308] text-[#1A2E1A] text-[10px] font-extrabold uppercase tracking-[0.25em] px-3 py-1.5 rounded-full mb-5">
+        ★ One More Thing
+      </span>
+      <h2 id="panel-title" class="font-serif text-2xl sm:text-3xl text-[#1A2E1A] leading-tight mb-2">
+        Take 2 Bundles → <span class="text-[#EAB308]">Free Shipping</span>
+      </h2>
+      <p class="text-sm text-[#1A2E1A]/70 mb-6">
+        Add a second bundle and we cover the shipping (save $10).
+      </p>
+
+      <div class="space-y-3 mb-6 text-left">
+        <div class="bg-white border border-[#1A2E1A]/10 rounded-xl p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">1 Bundle</p>
+            <p class="font-serif text-2xl text-[#1A2E1A] font-bold">$22.39</p>
+            <p class="text-xs text-[#1A2E1A]/60">+ Shipping ~$10</p>
+          </div>
+          <span class="text-[#1A2E1A]/30 text-3xl font-light">×1</span>
+        </div>
+        <div class="bg-[#1A2E1A] text-white border border-[#EAB308]/40 ring-2 ring-[#EAB308] rounded-xl p-4 flex items-center justify-between relative">
+          <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2 Bundles</p>
+            <p class="font-serif text-2xl text-white font-bold">$44.78</p>
+            <p class="text-xs text-[#EAB308] font-semibold">FREE shipping · Save $10</p>
+          </div>
+          <span class="text-[#EAB308]/60 text-3xl font-light">×2</span>
+        </div>
+      </div>
+
+      <button data-action="upsell-yes"
+              class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-3">
+        Yes — Get 2 with Free Shipping
+      </button>
+      <button data-action="upsell-no"
+              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 transition">
+        No, just 1 bundle
+      </button>
+    </div>
+  </template>
+
+  <!-- ============ TEMPLATE: Single product detail (parameterized) ============ -->
+  <template id="tpl-product">
+    <div>
+      <span class="inline-block text-[#1A2E1A]/60 text-[10px] font-bold uppercase tracking-[0.3em] mb-3" data-slot="step">Step 01 · Cleanse</span>
+      <h2 id="panel-title" class="font-serif text-3xl text-[#1A2E1A] leading-tight mb-3" data-slot="title">Henna Shampoo</h2>
+      <img data-slot="image" src="" alt="" class="w-full rounded-xl object-cover aspect-[4/3] mb-5">
+      <p class="text-sm text-[#1A2E1A]/75 leading-relaxed mb-4" data-slot="desc"></p>
+      <div class="flex flex-wrap gap-1.5 mb-5">
+        <span class="text-[10px] uppercase tracking-wider bg-[#1A2E1A] text-[#EAB308] px-3 py-1 rounded-full">Sulfate-Free</span>
+        <span class="text-[10px] uppercase tracking-wider bg-[#1A2E1A] text-[#EAB308] px-3 py-1 rounded-full">Color-Safe</span>
+      </div>
+      <p class="font-serif text-2xl text-[#1A2E1A] font-semibold mb-5">$15.99</p>
+
+      <!-- Smarter choice teaser: switch to Duo -->
+      <div class="bg-white border-2 border-[#EAB308] rounded-xl p-4 mb-4 relative">
+        <span class="absolute -top-2 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">Smarter Choice</span>
+        <h3 class="font-serif text-xl text-[#1A2E1A] mt-1 mb-1">Get the Duo, save 30%</h3>
+        <p class="text-xs text-[#1A2E1A]/65 mb-3">Shampoo + Conditioner together = $22.39 instead of $31.98</p>
+        <button data-action="bundle-yes"
+                class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-3 rounded-md transition active:scale-[0.98]">
+          Switch to Duo →
+        </button>
+      </div>
+
+      <button data-action="product-add-solo"
+              class="block w-full bg-[#1A2E1A] hover:bg-[#0f1f0f] text-white font-bold uppercase text-xs tracking-[0.15em] py-3.5 rounded-md transition">
+        Just add <span data-slot="title-short">this</span> alone
+      </button>
+      <button data-panel-close
+              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 mt-2 transition">
+        Close
+      </button>
+    </div>
+  </template>
+
+  <!-- ============ TEMPLATE: Compare (Duo vs 2× Duo with selector) ============ -->
+  <template id="tpl-compare">
+    <div>
+      <div class="text-center mb-6">
+        <span class="inline-block text-[#EAB308] text-[10px] font-bold uppercase tracking-[0.3em] mb-2">★ Pick the Right Deal</span>
+        <h2 id="panel-title" class="font-serif text-2xl sm:text-3xl text-[#1A2E1A] leading-tight">
+          Maximize your savings
         </h2>
-        <p class="font-serif italic text-lg text-[#1a2e1a]/70 mb-5">
-          The Complete Bundle
-        </p>
-        <p class="text-sm text-[#1a2e1a]/75 mb-6 leading-relaxed">
-          Henna Shampoo + Conditioner — your full Ayurvedic ritual at the lowest price we offer.
-        </p>
-        <div class="flex items-center justify-center gap-3 mb-6">
-          <span class="text-[#1a2e1a]/40 line-through text-base">$31.98</span>
-          <span class="font-serif text-3xl text-[#1a2e1a] font-bold">$22.39</span>
-          <span class="text-[10px] uppercase tracking-wider bg-[#eab308] text-[#1a2e1a] font-bold px-2 py-0.5 rounded">-30%</span>
-        </div>
-        <button id="btn-duo-yes"
-                class="block w-full bg-[#eab308] hover:bg-[#facc15] text-[#1a2e1a] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-3">
-          Profiter de l'offre →
-        </button>
-        <button data-popup-close
-                class="block w-full text-[#1a2e1a]/60 hover:text-[#1a2e1a] text-sm py-2 transition">
-          No thanks, I'll pay full price
-        </button>
-        <p class="text-[10px] text-[#1a2e1a]/50 mt-4 uppercase tracking-wider">
-          ⏰ Offer ends Sunday · 11:59 PM PST
-        </p>
       </div>
-    </div>
-  </div>
 
-  <!-- Popup #2 — Upsell free shipping -->
-  <div id="popup-upsell" data-popup class="hidden fixed inset-0 z-[100] items-center justify-center px-4 py-6">
-    <div class="popup-backdrop absolute inset-0 bg-[#1a2e1a]/70 backdrop-blur-md" data-popup-close></div>
-    <div class="popup-card relative w-full max-w-lg bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl ring-1 ring-[#1a2e1a]/10 overflow-hidden">
-      <button data-popup-close aria-label="Close"
-              class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#1a2e1a] flex items-center justify-center text-xl font-light transition shadow">
-        ×
-      </button>
-      <div class="p-6 sm:p-8 text-center">
-        <span class="inline-block bg-[#eab308] text-[#1a2e1a] text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1 rounded-full mb-4">
-          ★ One More Thing
-        </span>
-        <h2 class="font-serif text-2xl sm:text-3xl text-[#1a2e1a] leading-tight mb-2">
-          Take 2 Bundles → <span class="text-[#eab308]">Free Shipping</span>
-        </h2>
-        <p class="text-sm text-[#1a2e1a]/70 mb-6">
-          Add a second bundle and we cover the shipping (save $10).
-        </p>
-
-        <div class="grid grid-cols-2 gap-3 mb-6 text-left">
-          <div class="bg-white/60 border border-[#1a2e1a]/10 rounded-xl p-4">
-            <p class="text-[10px] uppercase tracking-widest text-[#1a2e1a]/60 mb-1">1 Bundle</p>
-            <p class="font-serif text-2xl text-[#1a2e1a] font-bold mb-1">$22.39</p>
-            <p class="text-xs text-[#1a2e1a]/60">+ Shipping ~$10</p>
-          </div>
-          <div class="bg-[#1a2e1a] text-white border border-[#eab308]/40 ring-2 ring-[#eab308] rounded-xl p-4 relative">
-            <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#eab308] text-[#1a2e1a] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">Best Value</span>
-            <p class="text-[10px] uppercase tracking-widest text-[#eab308] mb-1">2 Bundles</p>
-            <p class="font-serif text-2xl text-white font-bold mb-1">$44.78</p>
-            <p class="text-xs text-[#eab308]"><strong>FREE shipping</strong></p>
-            <p class="text-[10px] text-white/70 mt-1">Save $10 on shipping</p>
-          </div>
-        </div>
-
-        <button id="btn-upsell-yes"
-                class="block w-full bg-[#eab308] hover:bg-[#facc15] text-[#1a2e1a] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-3">
-          Yes — Get 2 with Free Shipping
-        </button>
-        <button id="btn-upsell-no"
-                class="block w-full text-[#1a2e1a]/60 hover:text-[#1a2e1a] text-sm py-2 transition">
-          No, just 1 bundle
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Popup #3 — Single product -> comparison -->
-  <div id="popup-compare" data-popup class="hidden fixed inset-0 z-[100] items-center justify-center px-4 py-6">
-    <div class="popup-backdrop absolute inset-0 bg-[#1a2e1a]/70 backdrop-blur-md" data-popup-close></div>
-    <div class="popup-card relative w-full max-w-2xl bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl ring-1 ring-[#1a2e1a]/10 overflow-hidden max-h-[90vh] overflow-y-auto">
-      <button data-popup-close aria-label="Close"
-              class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-[#1a2e1a] flex items-center justify-center text-xl font-light transition shadow">
-        ×
-      </button>
-      <div class="p-6 sm:p-8">
-        <div class="text-center mb-6">
-          <span class="inline-block text-[#eab308] text-[10px] font-bold uppercase tracking-[0.3em] mb-2">★ Better Deals Available</span>
-          <h2 class="font-serif text-2xl sm:text-3xl text-[#1a2e1a] leading-tight">
-            Wait — you can save more
-          </h2>
-          <p class="text-sm text-[#1a2e1a]/70 mt-2">
-            Choose the option that fits your routine
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-2">
-          <!-- Option A: Solo -->
-          <div class="bg-white/60 border border-[#1a2e1a]/10 rounded-xl p-5 flex flex-col">
-            <p class="text-[10px] uppercase tracking-widest text-[#1a2e1a]/60 mb-1">Option A</p>
-            <h3 class="font-serif text-xl text-[#1a2e1a] mb-2"><span data-compare-product-name>Product</span> Only</h3>
-            <p class="text-xs text-[#1a2e1a]/60 mb-3 flex-1">Just the one item. No discount.</p>
-            <p class="font-serif text-2xl text-[#1a2e1a] font-bold mb-4">$15.99</p>
-            <button id="btn-compare-solo"
-                    class="block w-full bg-white border-2 border-[#1a2e1a]/15 hover:border-[#1a2e1a]/40 text-[#1a2e1a] font-bold uppercase text-xs tracking-wider py-3 rounded-md transition">
-              Keep Single Product
-            </button>
-          </div>
-
-          <!-- Option B: Duo -->
-          <div class="bg-[#1a2e1a]/5 border-2 border-[#eab308] rounded-xl p-5 flex flex-col relative">
-            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#eab308] text-[#1a2e1a] text-[9px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">★ Recommended</span>
-            <p class="text-[10px] uppercase tracking-widest text-[#1a2e1a]/60 mb-1 mt-1">Option B</p>
-            <h3 class="font-serif text-xl text-[#1a2e1a] mb-2">The Duo Bundle</h3>
-            <p class="text-xs text-[#1a2e1a]/60 mb-3 flex-1">Shampoo + Conditioner. Full ritual.</p>
-            <div class="flex items-baseline gap-2 mb-4">
-              <span class="text-[#1a2e1a]/40 line-through text-sm">$31.98</span>
-              <span class="font-serif text-2xl text-[#1a2e1a] font-bold">$22.39</span>
-              <span class="text-[9px] bg-[#eab308] text-[#1a2e1a] font-bold uppercase px-1.5 py-0.5 rounded">-30%</span>
+      <div class="space-y-3 mb-6">
+        <!-- Option Duo -->
+        <label class="block bg-white border-2 border-[#EAB308] rounded-xl p-4 cursor-pointer ring-2 ring-[#EAB308]/0 has-[:checked]:ring-[#EAB308] transition relative">
+          <input type="radio" name="compare-option" value="duo" checked class="sr-only" />
+          <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Recommended</span>
+          <div class="flex items-start justify-between gap-3 mt-1">
+            <div class="flex-1">
+              <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">The Duo</p>
+              <h3 class="font-serif text-xl text-[#1A2E1A] mb-1">Shampoo + Conditioner</h3>
+              <p class="text-xs text-[#1A2E1A]/60">Full Ayurvedic ritual</p>
+              <div class="flex items-baseline gap-2 mt-2">
+                <span class="text-[#1A2E1A]/40 line-through text-sm">$31.98</span>
+                <span class="font-serif text-2xl text-[#1A2E1A] font-bold">$22.39</span>
+                <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">-30%</span>
+              </div>
             </div>
-            <button id="btn-compare-duo"
-                    class="block w-full bg-[#eab308] hover:bg-[#facc15] text-[#1a2e1a] font-extrabold uppercase text-xs tracking-wider py-3 rounded-md transition active:scale-[0.98]">
-              Get the Duo →
-            </button>
+            <span class="w-6 h-6 rounded-full border-2 border-[#1A2E1A]/30 [input:checked~div_&]:border-[#EAB308] [input:checked~div_&]:bg-[#EAB308] flex items-center justify-center shrink-0 text-[#1A2E1A] font-bold text-sm">✓</span>
           </div>
+        </label>
 
-          <!-- Option C: 2x Duo -->
-          <div class="bg-[#1a2e1a] text-white rounded-xl p-5 flex flex-col relative">
-            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-white text-[#1a2e1a] text-[9px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">★ Best Value</span>
-            <p class="text-[10px] uppercase tracking-widest text-[#eab308]/80 mb-1 mt-1">Option C</p>
-            <h3 class="font-serif text-xl text-white mb-2">2× The Duo</h3>
-            <p class="text-xs text-white/70 mb-3 flex-1">Two bundles. Free shipping included.</p>
-            <div class="flex items-baseline gap-2 mb-4">
-              <span class="font-serif text-2xl text-[#eab308] font-bold">$44.78</span>
-              <span class="text-[9px] bg-[#eab308] text-[#1a2e1a] font-bold uppercase px-1.5 py-0.5 rounded">FREE SHIP</span>
+        <!-- Option 2x Duo -->
+        <label class="block bg-[#1A2E1A] text-white rounded-xl p-4 cursor-pointer relative">
+          <input type="radio" name="compare-option" value="2duo" class="sr-only" />
+          <span class="absolute -top-2.5 left-4 bg-white text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
+          <div class="flex items-start justify-between gap-3 mt-1">
+            <div class="flex-1">
+              <p class="text-[10px] uppercase tracking-widest text-[#EAB308] mb-0.5">2× The Duo</p>
+              <h3 class="font-serif text-xl mb-1">Two Bundles</h3>
+              <p class="text-xs text-white/70">FREE shipping (save $10)</p>
+              <div class="flex items-baseline gap-2 mt-2">
+                <span class="font-serif text-2xl text-[#EAB308] font-bold">$44.78</span>
+                <span class="text-[9px] bg-[#EAB308] text-[#1A2E1A] font-bold uppercase px-1.5 py-0.5 rounded">FREE SHIP</span>
+              </div>
             </div>
-            <button id="btn-compare-2duo"
-                    class="block w-full bg-white hover:bg-[#eab308] text-[#1a2e1a] font-extrabold uppercase text-xs tracking-wider py-3 rounded-md transition active:scale-[0.98]">
-              Lock in Best Value →
-            </button>
+            <span class="w-6 h-6 rounded-full border-2 border-white/30 flex items-center justify-center shrink-0 text-white text-sm">✓</span>
           </div>
-        </div>
+        </label>
       </div>
+
+      <button data-action="compare-go"
+              class="block w-full bg-[#EAB308] hover:bg-[#facc15] text-[#1A2E1A] font-extrabold uppercase tracking-[0.15em] py-4 rounded-md shadow-lg transition active:scale-[0.98] mb-2">
+        Continue to Checkout →
+      </button>
+      <button data-panel-close
+              class="block w-full text-[#1A2E1A]/60 hover:text-[#1A2E1A] text-sm py-2 transition">
+        Cancel
+      </button>
     </div>
-  </div>
+  </template>
 
   <!-- ============ FUNNEL POPUPS SCRIPT ============ -->
   <script>
     (function () {
-      // ===== Shopify integration — replace these placeholders with real variant IDs =====
-      // Find them in Shopify Admin -> Products -> [Product] -> Variants -> URL ends with /variants/123456789
+      // ===== Shopify variant IDs (replace placeholders before going live) =====
       var VARIANT = {
         shampoo:     'REPLACE_WITH_SHAMPOO_VARIANT_ID',
         conditioner: 'REPLACE_WITH_CONDITIONER_VARIANT_ID',
         bundle:      'REPLACE_WITH_BUNDLE_VARIANT_ID',
       };
       var SHOPIFY_DOMAIN = 'reshmabeauty.com';
-      var DISCOUNT       = 'HENNA30'; // Shopify automatic discount code (set in Admin -> Discounts)
+      var DISCOUNT       = 'HENNA30';
+
+      var SESSION_KEY    = 'reshma_panel_dismissed';
+      var HOVER_DELAY    = 350;     // ms before hover triggers
+      var TIME_TRIGGER   = 10000;   // 10 sec auto-show
 
       // ===== Helpers =====
       function cartUrl(variant, qty, utmContent) {
         var params = [
           'discount=' + DISCOUNT,
           'utm_source=landing',
-          'utm_medium=popup',
+          'utm_medium=panel',
           'utm_campaign=henna_bundle_30',
-          'utm_content=' + (utmContent || 'popup')
+          'utm_content=' + (utmContent || 'panel')
         ].join('&');
         return 'https://' + SHOPIFY_DOMAIN + '/cart/' + variant + ':' + qty + '?' + params;
       }
 
-      function showPopup(id) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        el.classList.remove('hidden');
-        el.classList.add('flex');
-        document.body.classList.add('popup-locked');
-        var firstFocus = el.querySelector('button:not([data-popup-close])');
-        if (firstFocus) setTimeout(function(){ firstFocus.focus(); }, 50);
-      }
-      function hidePopup(id) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        el.classList.add('hidden');
-        el.classList.remove('flex');
-        if (!document.querySelector('[data-popup]:not(.hidden)')) {
-          document.body.classList.remove('popup-locked');
+      var PRODUCT_DATA = {
+        shampoo: {
+          step: 'Step 01 · Cleanse',
+          title: 'Henna Shampoo',
+          short: 'shampoo',
+          image: 'images/shampoo-bottle.jpg',
+          desc: 'Aloe Vera, Brahmi & Vitamin B5 — gently cleanses, builds body, reinforces every strand from root to tip.'
+        },
+        conditioner: {
+          step: 'Step 02 · Nourish',
+          title: 'Henna Conditioner',
+          short: 'conditioner',
+          image: 'images/conditioner-bottle.jpg',
+          desc: 'Argan, Grapeseed, Aloe Vera & Brahmi — deeply hydrates, smooths frizz, locks in mirror shine.'
         }
-      }
-      function hideAllPopups() {
-        document.querySelectorAll('[data-popup]').forEach(function(p){ p.classList.add('hidden'); p.classList.remove('flex'); });
-        document.body.classList.remove('popup-locked');
+      };
+
+      // ===== Side-panel state =====
+      var panel    = document.getElementById('side-panel');
+      var card     = document.getElementById('panel-card');
+      var backdrop = document.getElementById('panel-backdrop');
+      var content  = document.getElementById('panel-content');
+
+      var currentContext = {}; // remembers product etc. across template swaps
+      var autoDisabled   = !!sessionStorage.getItem(SESSION_KEY);
+
+      function isOpen() {
+        return !panel.classList.contains('hidden');
       }
 
-      // ===== Generic close handlers =====
-      document.querySelectorAll('[data-popup-close]').forEach(function(el){
-        el.addEventListener('click', function(e){
-          // close the nearest popup ancestor
-          var popup = e.currentTarget.closest('[data-popup]');
-          if (popup) hidePopup(popup.id);
+      function openPanel(template, ctx) {
+        currentContext = ctx || {};
+        // populate
+        var tpl = document.getElementById('tpl-' + template);
+        if (!tpl) return;
+        content.innerHTML = '';
+        content.appendChild(tpl.content.cloneNode(true));
+        // fill data slots if any
+        if (template === 'product' && ctx && ctx.product) {
+          var d = PRODUCT_DATA[ctx.product];
+          content.querySelectorAll('[data-slot]').forEach(function(el){
+            var k = el.getAttribute('data-slot');
+            if (k === 'image') { el.setAttribute('src', d.image); el.setAttribute('alt', d.title); }
+            else if (k === 'title-short') { el.textContent = d.short; }
+            else if (d[k]) { el.textContent = d[k]; }
+          });
+        }
+        // show
+        panel.classList.remove('hidden');
+        panel.setAttribute('aria-hidden', 'false');
+        // animate on next frame
+        requestAnimationFrame(function(){
+          backdrop.classList.add('opacity-100');
+          card.classList.remove('translate-x-full');
         });
-      });
-      document.addEventListener('keydown', function(e){
-        if (e.key === 'Escape') hideAllPopups();
-      });
-
-      // ===== Funnel: Popup #1 (Exit-intent) -> #2 (Upsell) =====
-      var EXIT_KEY = 'reshma_exit_popup_shown';
-
-      function maybeShowExitPopup() {
-        if (localStorage.getItem(EXIT_KEY)) return;
-        if (document.querySelector('[data-popup]:not(.hidden)')) return; // already a popup open
-        localStorage.setItem(EXIT_KEY, '1');
-        showPopup('popup-duo');
+        document.body.style.overflow = 'hidden';
       }
 
-      // Desktop trigger: cursor leaves through top of viewport
+      function closePanel() {
+        backdrop.classList.remove('opacity-100');
+        card.classList.add('translate-x-full');
+        autoDisabled = true;
+        sessionStorage.setItem(SESSION_KEY, '1');
+        setTimeout(function(){
+          panel.classList.add('hidden');
+          panel.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }, 350);
+      }
+
+      // ===== Click delegation =====
+      panel.addEventListener('click', function(e){
+        if (e.target.closest('[data-panel-close]')) { e.preventDefault(); closePanel(); return; }
+        var actionEl = e.target.closest('[data-action]');
+        if (!actionEl) return;
+        e.preventDefault();
+        var action = actionEl.getAttribute('data-action');
+
+        if (action === 'bundle-yes') {
+          openPanel('upsell');
+        }
+        else if (action === 'upsell-yes') {
+          window.location.href = cartUrl(VARIANT.bundle, 2, 'panel_upsell_2x');
+        }
+        else if (action === 'upsell-no') {
+          window.location.href = cartUrl(VARIANT.bundle, 1, 'panel_upsell_1x');
+        }
+        else if (action === 'product-add-solo') {
+          var p = currentContext.product;
+          var v = p === 'shampoo' ? VARIANT.shampoo : VARIANT.conditioner;
+          window.location.href = cartUrl(v, 1, 'panel_solo_' + p);
+        }
+        else if (action === 'compare-go') {
+          var sel = panel.querySelector('input[name="compare-option"]:checked');
+          var val = sel ? sel.value : 'duo';
+          var qty = val === '2duo' ? 2 : 1;
+          window.location.href = cartUrl(VARIANT.bundle, qty, 'panel_compare_' + val);
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && isOpen()) closePanel();
+      });
+
+      // ===== Auto-trigger guards =====
+      function autoOpen(template, ctx) {
+        if (autoDisabled || isOpen()) return;
+        openPanel(template, ctx);
+      }
+
+      // ===== Hover triggers (only on devices with hover capability) =====
+      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (canHover) {
+        var hoverTimer;
+        document.querySelectorAll('[data-hover-popup]').forEach(function(el){
+          el.addEventListener('mouseenter', function(){
+            var spec = el.getAttribute('data-hover-popup');
+            // each element fires at most once
+            if (el.dataset.popupFired) return;
+            hoverTimer = setTimeout(function(){
+              el.dataset.popupFired = '1';
+              if (spec.indexOf('product:') === 0) {
+                autoOpen('product', { product: spec.split(':')[1] });
+              } else {
+                autoOpen(spec);
+              }
+            }, HOVER_DELAY);
+          });
+          el.addEventListener('mouseleave', function(){
+            if (hoverTimer) clearTimeout(hoverTimer);
+          });
+        });
+      }
+
+      // ===== 10-second auto trigger =====
+      setTimeout(function(){ autoOpen('bundle'); }, TIME_TRIGGER);
+
+      // ===== Exit-intent (desktop) =====
       document.addEventListener('mouseleave', function(e){
-        if (e.clientY <= 0) maybeShowExitPopup();
+        if (e.clientY <= 0) autoOpen('bundle');
       });
 
-      // Mobile trigger: rapid scroll up near the top, OR 45 sec inactivity fallback
-      var lastY = window.scrollY, lastT = Date.now();
-      window.addEventListener('scroll', function(){
-        var now = Date.now();
-        var dy = window.scrollY - lastY;
-        var dt = now - lastT;
-        // upward scroll faster than ~1.5px/ms when within first 100px of page
-        if (dy < -50 && dt < 250 && window.scrollY < 100) maybeShowExitPopup();
-        lastY = window.scrollY; lastT = now;
-      }, { passive: true });
-
-      setTimeout(maybeShowExitPopup, 45000); // 45 sec safety net for mobile
-
-      document.getElementById('btn-duo-yes').addEventListener('click', function(){
-        hidePopup('popup-duo');
-        showPopup('popup-upsell');
-      });
-
-      document.getElementById('btn-upsell-yes').addEventListener('click', function(){
-        window.location.href = cartUrl(VARIANT.bundle, 2, 'popup_upsell_2x');
-      });
-      document.getElementById('btn-upsell-no').addEventListener('click', function(){
-        window.location.href = cartUrl(VARIANT.bundle, 1, 'popup_upsell_1x');
-      });
-
-      // ===== Single-product CTA interception -> Popup #3 (compare) =====
-      var compareEl = document.getElementById('popup-compare');
-
+      // ===== Active product CTA: always opens compare popup =====
       document.querySelectorAll('[data-product-cta]').forEach(function(btn){
         btn.addEventListener('click', function(e){
           e.preventDefault();
-          var product = btn.getAttribute('data-product-cta'); // 'shampoo' | 'conditioner'
-          compareEl.dataset.product = product;
-          // update product name in Option A title
-          var label = product === 'shampoo' ? 'Shampoo' : 'Conditioner';
-          compareEl.querySelectorAll('[data-compare-product-name]').forEach(function(n){ n.textContent = label; });
-          showPopup('popup-compare');
+          // active trigger ignores autoDisabled — temporarily allow
+          var wasDisabled = autoDisabled;
+          autoDisabled = false;
+          openPanel('compare', { product: btn.getAttribute('data-product-cta') });
+          autoDisabled = wasDisabled; // restore (close will set it true again anyway)
         });
-      });
-
-      document.getElementById('btn-compare-solo').addEventListener('click', function(){
-        var product = compareEl.dataset.product;
-        var variant = product === 'shampoo' ? VARIANT.shampoo : VARIANT.conditioner;
-        window.location.href = cartUrl(variant, 1, 'popup_compare_solo_' + product);
-      });
-      document.getElementById('btn-compare-duo').addEventListener('click', function(){
-        window.location.href = cartUrl(VARIANT.bundle, 1, 'popup_compare_duo');
-      });
-      document.getElementById('btn-compare-2duo').addEventListener('click', function(){
-        window.location.href = cartUrl(VARIANT.bundle, 2, 'popup_compare_2duo');
       });
     })();
   </script>
