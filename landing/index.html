@@ -690,6 +690,25 @@
         return !panel.classList.contains('hidden');
       }
 
+      // Decide which side the panel slides in from based on template + context.
+      // Shampoo opens from the LEFT. Everything else opens from the RIGHT.
+      function panelSideFor(template, ctx) {
+        if (template === 'product' && ctx && ctx.product === 'shampoo') return 'left';
+        return 'right';
+      }
+      // Apply the right starting classes for the slide-in side BEFORE the
+      // first paint. The card sits off-screen on the chosen side, then JS
+      // pulls it back into view via translate-x-0.
+      function setPanelSide(side) {
+        if (side === 'left') {
+          card.classList.remove('right-0', 'translate-x-full');
+          card.classList.add('left-0', '-translate-x-full');
+        } else {
+          card.classList.remove('left-0', '-translate-x-full');
+          card.classList.add('right-0', 'translate-x-full');
+        }
+      }
+
       function openPanel(template, ctx) {
         currentContext = ctx || {};
         // populate
@@ -707,20 +726,27 @@
             else if (d[k]) { el.textContent = d[k]; }
           });
         }
+        // pin to the correct side BEFORE we unhide
+        setPanelSide(panelSideFor(template, ctx));
         // show
         panel.classList.remove('hidden');
         panel.setAttribute('aria-hidden', 'false');
         // animate on next frame
         requestAnimationFrame(function(){
           backdrop.classList.add('opacity-100');
-          card.classList.remove('translate-x-full');
+          card.classList.remove('translate-x-full', '-translate-x-full');
         });
         document.body.style.overflow = 'hidden';
       }
 
       function closePanel() {
         backdrop.classList.remove('opacity-100');
-        card.classList.add('translate-x-full');
+        // slide out in the same direction the card came from
+        if (card.classList.contains('left-0')) {
+          card.classList.add('-translate-x-full');
+        } else {
+          card.classList.add('translate-x-full');
+        }
         autoDisabled = true;
         sessionStorage.setItem(SESSION_KEY, '1');
         setTimeout(function(){
