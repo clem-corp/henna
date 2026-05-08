@@ -585,7 +585,21 @@
       </div>
 
       <div class="space-y-3 mb-3">
-        <!-- Card-button: The Duo (Recommended) -->
+        <!-- Card-button #1: Just the product (solo) -->
+        <button type="button" data-action="compare-solo"
+                class="w-full text-left bg-white border-2 border-[#1A2E1A]/15 hover:border-[#1A2E1A]/40 hover:bg-[#1A2E1A]/[0.02] rounded-xl p-4 flex items-start justify-between gap-3 transition active:scale-[0.99]">
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] uppercase tracking-widest text-[#1A2E1A]/60 mb-0.5">Just the product</p>
+            <h3 class="font-serif text-xl text-[#1A2E1A] mb-1" data-slot="title">Henna Shampoo</h3>
+            <p class="text-xs text-[#1A2E1A]/60">No discount, just one</p>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="font-serif text-2xl text-[#1A2E1A] font-bold">$15.99</span>
+            </div>
+          </div>
+          <span class="text-[#1A2E1A]/50 text-xs uppercase tracking-wider font-bold whitespace-nowrap pt-1">Continue →</span>
+        </button>
+
+        <!-- Card-button #2: The Duo (Recommended) -->
         <button type="button" data-action="compare-duo"
                 class="w-full text-left bg-white border-2 border-[#EAB308] hover:bg-[#EAB308]/5 rounded-xl p-4 flex items-start justify-between gap-3 relative transition active:scale-[0.99]">
           <span class="absolute -top-2.5 left-4 bg-[#EAB308] text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Recommended</span>
@@ -602,7 +616,7 @@
           <span class="text-[#EAB308] text-xs uppercase tracking-wider font-bold whitespace-nowrap pt-1">Continue →</span>
         </button>
 
-        <!-- Card-button: 2× The Duo (Best Value) -->
+        <!-- Card-button #3: 2× The Duo (Best Value) -->
         <button type="button" data-action="compare-2duo"
                 class="w-full text-left bg-[#1A2E1A] text-white rounded-xl p-4 flex items-start justify-between gap-3 relative transition active:scale-[0.99] hover:bg-[#0f1f0f]">
           <span class="absolute -top-2.5 left-4 bg-white text-[#1A2E1A] text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full">★ Best Value</span>
@@ -742,8 +756,9 @@
         if (!tpl) return;
         content.innerHTML = '';
         content.appendChild(tpl.content.cloneNode(true));
-        // fill data slots if any
-        if (template === 'product' && ctx && ctx.product) {
+        // fill data slots if any (product OR compare templates use the
+        // ctx.product to inject the right name/image)
+        if ((template === 'product' || template === 'compare') && ctx && ctx.product) {
           var d = PRODUCT_DATA[ctx.product];
           content.querySelectorAll('[data-slot]').forEach(function(el){
             var k = el.getAttribute('data-slot');
@@ -810,6 +825,11 @@
           var p = currentContext.product;
           var v = p === 'shampoo' ? VARIANT.shampoo : VARIANT.conditioner;
           window.location.href = cartUrl(v, 1, 'panel_solo_' + p);
+        }
+        else if (action === 'compare-solo') {
+          var p = currentContext.product;
+          var v = p === 'shampoo' ? VARIANT.shampoo : VARIANT.conditioner;
+          window.location.href = cartUrl(v, 1, 'panel_compare_solo_' + p);
         }
         else if (action === 'compare-duo') {
           window.location.href = cartUrl(VARIANT.bundle, 1, 'panel_compare_duo');
