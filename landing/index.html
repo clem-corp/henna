@@ -56,6 +56,14 @@
 
 <body class="bg-bg text-ink pt-[72px] sm:pt-14 pb-24 md:pb-0">
 
+  <!-- Safe-area shield — fills the system status-bar / notch area with the
+       same green as the banner, so on phones with a notch (or browsers that
+       don't honour theme-color in the status bar), there's no white sliver
+       between the OS bar and the promo banner. Zero-height when no notch. -->
+  <div aria-hidden="true"
+       class="fixed top-0 left-0 right-0 z-[60] bg-green1 pointer-events-none"
+       style="height: env(safe-area-inset-top, 0px);"></div>
+
   <!-- ============ FIXED PROMO BANNER — same content on all screens ============ -->
   <div id="promo-banner" data-hover-popup="bundle" class="fixed top-0 left-0 right-0 z-50 bg-green1 text-white h-[72px] sm:h-14">
     <div class="max-w-7xl mx-auto px-4 md:px-8 h-full flex flex-wrap items-center content-center justify-center gap-x-6 sm:gap-x-10 md:gap-x-14 gap-y-1">
