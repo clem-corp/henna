@@ -93,42 +93,88 @@ All 5 CTAs carry the same campaign tag:
 
 `utm_content` differs per placement: `hero_cta`, `product_shampoo`, `product_conditioner`, `bundle_primary`, `bundle_reinforce`.
 
-## Current state
+## Production readiness
 
-### Newsletter
+### 🟢 Landing page — code is ready to ship
 
-| Block | Status |
+| Item | Status |
 |---|---|
-| HTML structure & responsive | ✅ |
-| English conversion-optimized copy | ✅ |
-| Compressed images (-97%) | ✅ |
-| URLs verified against live site | ✅ |
-| UTMs on 5 CTAs | ✅ |
-| Timezone PST | ✅ |
-| All 5 CTAs rerouted through landing page | ✅ |
-| Postal address | 🟡 placeholder, awaits real value |
-| Unsub / preferences links | 🟡 awaits ESP choice |
-| Shopify discount code `HENNA30` | 🟡 awaits creation |
-| Real social icon PNGs | 🔴 to provide |
-| Litmus / QA | 🔴 to run |
+| Deployed live | ✅ https://henna-pied.vercel.app/ |
+| Tailwind compiled (~24 KB minified) | ✅ |
+| Mobile-first responsive + sticky promo banner + sticky bottom CTA | ✅ |
+| SEO + Open Graph + favicons + sitemap + robots | ✅ |
+| Lighthouse mobile | ✅ Performance 90 / Accessibility 93 / SEO 100 |
+| Real Shopify variant IDs wired | ✅ shampoo `42332141519070`, conditioner `42332142043358` |
+| Auto-add-to-cart on every "Buy bundle" CTA (banner / card / final / popups) | ✅ |
+| Solo product CTAs route through Compare popup (3 options) | ✅ |
+| Popup funnel: bundle (centered) / upsell / product detail / compare | ✅ |
+| Hover triggers on PC, time + exit-intent triggers on mobile | ✅ |
 
-### Landing page
+### 🟡 Newsletter — code is ready, ESP setup needed
 
-| Block | Status |
+| Item | Status |
 |---|---|
-| Tailwind production build (18 KB CSS) | ✅ |
-| SEO + Open Graph + favicons | ✅ |
-| Deployed to Vercel | ✅ https://henna-pied.vercel.app/ |
-| All assets self-contained for Vercel | ✅ |
-| Funnel newsletter → landing → Shopify wired | ✅ |
-| Lighthouse perf/a11y/SEO ≥ 90 | ✅ (90 / 93 / 100) |
-| Lighthouse fixes applied (LCP, images, fonts, contrast) | ✅ commit `ef2e2e4` |
-| Lighthouse Best Practices ≥ 90 | 🟡 73 (Google Fonts cookies — needs self-host) |
-| LCP < 2.5 s on Slow 4G | 🟡 3.5 s before fixes — re-run after `ef2e2e4` to confirm |
-| Custom domain | 🟡 optional |
-| Vercel Analytics enabled | 🔴 user action, dashboard toggle |
-| Plausible activated | 🔴 needs sign-up + uncomment snippet |
-| Real Android + iOS device test | 🔴 user action |
+| HTML structure + responsive + 100 % English copy | ✅ |
+| Compressed images (~580 KB total) | ✅ |
+| 5 CTAs route through https://henna-pied.vercel.app | ✅ |
+| Real postal address in footer | 🔴 placeholder `[REGISTERED ADDRESS]` (CAN-SPAM blocker) |
+| Unsub / Update-preferences merge tags | 🔴 awaits ESP choice (CAN-SPAM blocker) |
+| Real social icons | 🟡 PNGs to provide |
+| Subject line + From email + Reply-to | 🟡 to set in ESP |
+| Litmus / device test | 🟡 to run |
+| Email-friendly image hosting (ESP CDN or absolute URLs) | 🟡 to do at upload |
+
+### 🔴 Shopify — admin setup blocking
+
+| Item | Status |
+|---|---|
+| Variant IDs wired & cart permalinks tested HTTP 200 | ✅ |
+| **Automatic discount code `HENNA30` (30 % off bundle)** | 🔴 **BLOCKER** — must be created in Shopify Admin |
+| Real campaign end date (currently Sun May 10 2026 23:59 PST in the countdown) | 🔴 confirm |
+
+---
+
+## What's left to ship — checklist
+
+### TIER 1 — Landing-only launch (do this NOW)
+
+The landing is code-ready. **Only one blocker** before traffic can convert:
+
+- [ ] **Create `HENNA30` automatic discount** in Shopify Admin → Discounts → Create automatic discount → 30 % off, applied when cart contains both Henna Shampoo + Henna Conditioner. Without it, clicking a bundle CTA opens the Shopify cart with both products but **at full price** ($31.98 instead of $22.39).
+- [ ] **End-to-end test**: open https://henna-pied.vercel.app/ on a phone → click "Unlock 30% Bundle" → confirm both products land in the cart with the discount applied
+- [ ] (optional) Confirm `Sun May 10 2026 23:59 PST` is the real campaign end date in the countdown banner — adjust if not
+
+### TIER 2 — Newsletter send (when you're ready to mail)
+
+Cannot send without:
+
+- [ ] **Real postal address** — pull from Shopify Admin → Settings → Store details and replace `[REGISTERED ADDRESS]` in the newsletter footer
+- [ ] **Pick ESP** (Mailchimp / Klaviyo / Brevo) — replace the two `href="#"` in the newsletter footer with the ESP's merge tags for *Unsubscribe* and *Update preferences*
+- [ ] **Real social icons** (4 PNGs, ~36 × 36 px, gold on dark green) for IG / FB / TikTok / YouTube
+- [ ] **Verify** that `@reshmabeauty` exists on Instagram + Facebook (HTTP probes hit the login wall, manual check needed)
+- [ ] **Subject line** — pick from the 5 variants in the section below or A/B-test
+- [ ] **From name + From email + Reply-to** (recommend `Reshma Beauty <hello@reshmabeauty.com>`)
+- [ ] **Image hosting**: upload the 5 images via the ESP's image library (simplest) OR replace `src="images/..."` with absolute CDN URLs
+- [ ] **Litmus test** — Gmail desktop+mobile, Outlook 365, Apple Mail iOS+macOS, dark mode
+- [ ] **Self-test**: send to your own inbox, open on iPhone + Android, click every link to validate redirects and UTMs
+- [ ] **Mail-Tester** score ≥ 8/10
+
+### TIER 3 — Nice-to-have polish (post-launch)
+
+- [ ] **Custom domain** for the landing (e.g. `henna-bundle.com`) — better trust, better SEO. Vercel → Project Settings → Domains → Add. Re-run `scripts/set-url.sh` afterward.
+- [ ] **Analytics** — pick one:
+  - Vercel Analytics (1 click in dashboard, free up to 2 500 events/mo)
+  - Plausible (snippet ready in `<head>` as a comment, ~9 $/mo)
+  - Google Analytics 4 (free, but cookie banner becomes mandatory in EU)
+- [ ] **Heatmap** — Microsoft Clarity (free, unlimited) to see where users click
+- [ ] **Re-run Lighthouse** after deploy to confirm scores held (target ≥ 95 perf/a11y after the latest fixes)
+- [ ] **PageSpeed Insights** at https://pagespeed.web.dev/?url=https://henna-pied.vercel.app
+- [ ] **Open Graph preview** at https://www.opengraph.xyz
+- [ ] **Real device test** — Android Chrome + iOS Safari
+- [ ] **A/B test plan** — subject line + bundle CTA copy + popup variants
+- [ ] **Day-3 re-engagement email** to non-openers with a different subject
+
+---
 
 ---
 
