@@ -645,9 +645,8 @@
     (function () {
       // ===== Shopify variant IDs (replace placeholders before going live) =====
       var VARIANT = {
-        shampoo:     'REPLACE_WITH_SHAMPOO_VARIANT_ID',
-        conditioner: 'REPLACE_WITH_CONDITIONER_VARIANT_ID',
-        bundle:      'REPLACE_WITH_BUNDLE_VARIANT_ID',
+        shampoo:     '7515550482654',
+        conditioner: '7515550777566',
       };
       var SHOPIFY_DOMAIN = 'reshmabeauty.com';
       var DISCOUNT       = 'HENNA30';
@@ -666,6 +665,20 @@
           'utm_content=' + (utmContent || 'panel')
         ].join('&');
         return 'https://' + SHOPIFY_DOMAIN + '/cart/' + variant + ':' + qty + '?' + params;
+      }
+      // Bundle = 1 shampoo + 1 conditioner per "bundle". Shopify supports
+      // multi-line cart permalinks: /cart/V1:Q1,V2:Q2
+      function bundleCartUrl(bundleQty, utmContent) {
+        var params = [
+          'discount=' + DISCOUNT,
+          'utm_source=landing',
+          'utm_medium=panel',
+          'utm_campaign=henna_bundle_30',
+          'utm_content=' + (utmContent || 'panel')
+        ].join('&');
+        return 'https://' + SHOPIFY_DOMAIN + '/cart/' +
+               VARIANT.shampoo + ':' + bundleQty + ',' +
+               VARIANT.conditioner + ':' + bundleQty + '?' + params;
       }
 
       var PRODUCT_DATA = {
@@ -816,10 +829,10 @@
           openPanel('upsell');
         }
         else if (action === 'upsell-yes') {
-          window.location.href = cartUrl(VARIANT.bundle, 2, 'panel_upsell_2x');
+          window.location.href = bundleCartUrl(2, 'panel_upsell_2x');
         }
         else if (action === 'upsell-no') {
-          window.location.href = cartUrl(VARIANT.bundle, 1, 'panel_upsell_1x');
+          window.location.href = bundleCartUrl(1, 'panel_upsell_1x');
         }
         else if (action === 'product-add-solo') {
           var p = currentContext.product;
@@ -832,10 +845,10 @@
           window.location.href = cartUrl(v, 1, 'panel_compare_solo_' + p);
         }
         else if (action === 'compare-duo') {
-          window.location.href = cartUrl(VARIANT.bundle, 1, 'panel_compare_duo');
+          window.location.href = bundleCartUrl(1, 'panel_compare_duo');
         }
         else if (action === 'compare-2duo') {
-          window.location.href = cartUrl(VARIANT.bundle, 2, 'panel_compare_2duo');
+          window.location.href = bundleCartUrl(2, 'panel_compare_2duo');
         }
       });
 
